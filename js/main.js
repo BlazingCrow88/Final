@@ -56,13 +56,26 @@ const deleteChildElements = (parentElement) => {
 const addButtonListeners = () => {
     const buttons = document.querySelectorAll("main button");
     buttons.forEach(button => {
-        if (button.dataset.id) {
-            button.addEventListener("click", (event) => 
-                toggleComments(event, button.dataset.id));
+        if (button.dataset.postId) {
+            const handler = (event) => toggleComments(event, button.dataset.postId);
+            button._clickHandler = handler; // Store handler reference for removal
+            button.addEventListener("click", handler);
         }
     });
     return buttons;
 };
+
+const removeButtonListeners = () => {
+    const buttons = document.querySelectorAll("main button");
+    buttons.forEach(button => {
+        if (button.dataset.postId && button._clickHandler) {
+            button.removeEventListener("click", button._clickHandler);
+            delete button._clickHandler;
+        }
+    });
+    return buttons;
+};
+
 
 // Function 7: Remove button listeners
 const removeButtonListeners = () => {
@@ -195,11 +208,14 @@ const createPosts = async (posts) => {
 // Function 16: Display posts
 const displayPosts = async (posts) => {
     const main = document.querySelector("main");
-    const element = posts 
-        ? await createPosts(posts)
-        : createElemWithText("p", "Select an Employee to display their posts", "default-text");
-    main.append(element);
-    return element;
+    if (!posts) {
+        const p = createElemWithText("p", "Select an Employee to display their posts", "default-text");
+        main.append(p);
+        return p;
+    }
+    const fragment = await createPosts(posts);
+    main.append(fragment);
+    return fragment;
 };
 
 // Function 17: Toggle comments
@@ -224,13 +240,19 @@ const refreshPosts = async (posts) => {
 
 // Function 19: Select menu change handler
 const selectMenuChangeEventHandler = async (event) => {
+    // Return undefined if no event
     if (!event) return;
-    const selectMenu = event.target;
-    selectMenu.disabled = true;
-    const userId = event.target.value || 1;
+
+    // Get userId (default to 1 if no value)
+    const userId = event?.target?.value || 1;
+
+    // Get posts data
     const posts = await getUserPosts(userId);
+
+    // Get refreshed posts array
     const refreshPostsArray = await refreshPosts(posts);
-    selectMenu.disabled = false;
+
+    // Return array containing required elements
     return [userId, posts, refreshPostsArray];
 };
 
