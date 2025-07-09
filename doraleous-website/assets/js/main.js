@@ -1,306 +1,493 @@
-// Main JavaScript - Brian M. Shoemaker Author Website
-// Core functionality for navigation, mobile menu, and general interactions
+/* ===================================
+   MAIN JAVASCRIPT ENTRY POINT
+   File: assets/js/main.js
+   =================================== */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all core functionality
-    initializeNavigation();
-    initializeMobileMenu();
-    initializeScrollEffects();
-    initializeFormHandling();
-    initializeSmoothScrolling();
-    initializeUtilities();
-    
-    console.log('Website initialized successfully');
-});
+(function() {
+    'use strict';
 
-// Navigation Management
-function initializeNavigation() {
-    const nav = document.getElementById('main-nav');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    if (!nav) return;
-    
-    // Handle navigation scroll effects
-    window.addEventListener('scroll', function() {
-        const scrollPosition = window.scrollY;
+    // Global configuration
+    const SITE_CONFIG = {
+        // Site information
+        siteName: 'Brian M. Shoemaker',
+        siteURL: 'https://brianmshoemaker.com',
         
-        if (scrollPosition > 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
-    
-    // Handle dropdown menus
-    const dropdowns = document.querySelectorAll('.dropdown');
-    
-    dropdowns.forEach(dropdown => {
-        const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+        // Feature flags
+        features: {
+            analytics: true,
+            smoothScroll: true,
+            animations: true,
+            lazyLoading: true,
+            serviceWorker: false,
+            darkMode: false,
+            searchFunctionality: true
+        },
         
-        if (dropdownMenu) {
-            dropdown.addEventListener('mouseenter', function() {
-                dropdownMenu.style.display = 'block';
-                setTimeout(() => {
-                    dropdownMenu.style.opacity = '1';
-                    dropdownMenu.style.transform = 'translateY(0)';
-                }, 10);
-            });
-            
-            dropdown.addEventListener('mouseleave', function() {
-                dropdownMenu.style.opacity = '0';
-                dropdownMenu.style.transform = 'translateY(-10px)';
-                setTimeout(() => {
-                    dropdownMenu.style.display = 'none';
-                }, 300);
-            });
-        }
-    });
-    
-    // Handle active navigation states
-    updateActiveNavigation();
-}
-
-// Mobile Menu Management
-function initializeMobileMenu() {
-    const navToggle = document.getElementById('nav-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    if (!navToggle || !navMenu) return;
-    
-    // Toggle mobile menu
-    navToggle.addEventListener('click', function() {
-        navMenu.classList.toggle('active');
-        navToggle.classList.toggle('active');
-        document.body.classList.toggle('menu-open');
+        // Performance settings
+        performance: {
+            imageOptimization: true,
+            cssMinification: true,
+            jsMinification: true,
+            preloadCriticalResources: true
+        },
         
-        // Animate hamburger lines
-        const lines = navToggle.querySelectorAll('.hamburger-line');
-        lines.forEach((line, index) => {
-            if (navToggle.classList.contains('active')) {
-                if (index === 0) {
-                    line.style.transform = 'rotate(45deg) translate(5px, 5px)';
-                } else if (index === 1) {
-                    line.style.opacity = '0';
-                } else if (index === 2) {
-                    line.style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                }
-            } else {
-                line.style.transform = 'none';
-                line.style.opacity = '1';
+        // Third-party integrations
+        integrations: {
+            googleAnalytics: 'GA_MEASUREMENT_ID',
+            mailchimp: 'MAILCHIMP_API_KEY',
+            socialMedia: {
+                facebook: 'brianmshoemaker',
+                twitter: 'brianmshoemaker',
+                instagram: 'brianmshoemaker',
+                goodreads: 'brianmshoemaker'
             }
-        });
-    });
-    
-    // Close mobile menu when clicking nav links
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-            document.body.classList.remove('menu-open');
-            
-            // Reset hamburger lines
-            const lines = navToggle.querySelectorAll('.hamburger-line');
-            lines.forEach(line => {
-                line.style.transform = 'none';
-                line.style.opacity = '1';
-            });
-        });
-    });
-    
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-            document.body.classList.remove('menu-open');
         }
-    });
-}
-
-// Scroll Effects Management
-function initializeScrollEffects() {
-    // Parallax effect for hero section
-    const heroSection = document.querySelector('.hero-section');
-    
-    if (heroSection) {
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const parallaxSpeed = 0.5;
-            
-            heroSection.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-        });
-    }
-    
-    // Fade in elements on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
     };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-            }
-        });
-    }, observerOptions);
-    
-    // Observe elements that should fade in
-    const fadeElements = document.querySelectorAll('.fade-on-scroll');
-    fadeElements.forEach(element => {
-        observer.observe(element);
-    });
-}
 
-// Form Handling
-function initializeFormHandling() {
-    // Newsletter signup form
-    const newsletterForm = document.getElementById('newsletter-form');
-    
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleNewsletterSignup(this);
-        });
-    }
-    
-    // Contact form
-    const contactForm = document.getElementById('contact-form');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleContactForm(this);
-        });
-    }
-    
-    // General form validation
-    const allForms = document.querySelectorAll('form');
-    
-    allForms.forEach(form => {
-        const inputs = form.querySelectorAll('input, textarea');
+    // Module loading states
+    const moduleStates = {
+        navigation: false,
+        animations: false,
+        smoothScroll: false,
+        formValidation: false,
+        characterCarousel: false,
+        lazyLoading: false,
+        analytics: false
+    };
+
+    // Performance monitoring
+    const performanceMetrics = {
+        startTime: performance.now(),
+        domContentLoaded: null,
+        fullyLoaded: null,
+        firstPaint: null,
+        firstContentfulPaint: null
+    };
+
+    // Initialize the website
+    function init() {
+        // Record performance metrics
+        recordPerformanceMetrics();
         
-        inputs.forEach(input => {
-            input.addEventListener('blur', function() {
-                validateInput(this);
+        // Setup error handling
+        setupErrorHandling();
+        
+        // Initialize core functionality
+        initializeCore();
+        
+        // Initialize modules based on page type
+        initializeModules();
+        
+        // Setup third-party integrations
+        setupIntegrations();
+        
+        // Setup accessibility features
+        setupAccessibility();
+        
+        // Setup SEO enhancements
+        setupSEO();
+        
+        // Setup performance optimizations
+        setupPerformanceOptimizations();
+        
+        // Final initialization tasks
+        finalizeInitialization();
+    }
+
+    // Record performance metrics
+    function recordPerformanceMetrics() {
+        // Record DOM content loaded time
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                performanceMetrics.domContentLoaded = performance.now() - performanceMetrics.startTime;
+                console.log('DOM Content Loaded:', performanceMetrics.domContentLoaded + 'ms');
             });
-            
-            input.addEventListener('input', function() {
-                clearValidationError(this);
-            });
-        });
-    });
-}
-
-// Newsletter Signup Handler
-function handleNewsletterSignup(form) {
-    const emailInput = form.querySelector('input[type="email"]');
-    const submitButton = form.querySelector('button[type="submit"]');
-    
-    if (!emailInput || !submitButton) return;
-    
-    const email = emailInput.value.trim();
-    
-    if (!isValidEmail(email)) {
-        showError(emailInput, 'Please enter a valid email address');
-        return;
-    }
-    
-    // Show loading state
-    submitButton.textContent = 'Subscribing...';
-    submitButton.disabled = true;
-    
-    // Simulate API call (replace with actual implementation)
-    setTimeout(() => {
-        // Success state
-        showSuccess(form, 'Thank you for subscribing! Check your email for a confirmation.');
-        form.reset();
-        
-        // Reset button
-        submitButton.textContent = 'Subscribe';
-        submitButton.disabled = false;
-        
-        // Track event (replace with actual analytics)
-        trackEvent('newsletter_signup', { email: email });
-    }, 2000);
-}
-
-// Contact Form Handler
-function handleContactForm(form) {
-    const submitButton = form.querySelector('button[type="submit"]');
-    const formData = new FormData(form);
-    
-    if (!submitButton) return;
-    
-    // Validate required fields
-    const requiredFields = form.querySelectorAll('[required]');
-    let isValid = true;
-    
-    requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            showError(field, 'This field is required');
-            isValid = false;
         }
-    });
-    
-    if (!isValid) return;
-    
-    // Show loading state
-    submitButton.textContent = 'Sending...';
-    submitButton.disabled = true;
-    
-    // Simulate API call (replace with actual implementation)
-    setTimeout(() => {
-        // Success state
-        showSuccess(form, 'Thank you for your message! We\'ll get back to you soon.');
-        form.reset();
-        
-        // Reset button
-        submitButton.textContent = 'Send Message';
-        submitButton.disabled = false;
-        
-        // Track event
-        trackEvent('contact_form_submit', { 
-            name: formData.get('name'),
-            email: formData.get('email'),
-            subject: formData.get('subject')
-        });
-    }, 2000);
-}
 
-// Smooth Scrolling
-function initializeSmoothScrolling() {
-    const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
-    
-    smoothScrollLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
+        // Record fully loaded time
+        window.addEventListener('load', () => {
+            performanceMetrics.fullyLoaded = performance.now() - performanceMetrics.startTime;
+            console.log('Fully Loaded:', performanceMetrics.fullyLoaded + 'ms');
             
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
+            // Report performance metrics
+            reportPerformanceMetrics();
+        });
+
+        // Record paint metrics
+        if ('PerformanceObserver' in window) {
+            const paintObserver = new PerformanceObserver((entryList) => {
+                const entries = entryList.getEntries();
+                entries.forEach(entry => {
+                    if (entry.name === 'first-paint') {
+                        performanceMetrics.firstPaint = entry.startTime;
+                    } else if (entry.name === 'first-contentful-paint') {
+                        performanceMetrics.firstContentfulPaint = entry.startTime;
+                    }
+                });
+            });
             
-            if (targetElement) {
-                const headerOffset = 80;
-                const elementPosition = targetElement.offsetTop;
-                const offsetPosition = elementPosition - headerOffset;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
+            paintObserver.observe({ entryTypes: ['paint'] });
+        }
+    }
+
+    // Setup global error handling
+    function setupErrorHandling() {
+        // Handle JavaScript errors
+        window.addEventListener('error', (event) => {
+            console.error('JavaScript Error:', {
+                message: event.message,
+                filename: event.filename,
+                lineno: event.lineno,
+                colno: event.colno,
+                error: event.error
+            });
+            
+            // Report to analytics if available
+            if (SITE_CONFIG.features.analytics && typeof gtag !== 'undefined') {
+                gtag('event', 'exception', {
+                    description: event.message,
+                    fatal: false
                 });
             }
         });
-    });
-}
 
-// Utility Functions
-function initializeUtilities() {
-    // Lazy loading for images
-    const lazyImages = document.querySelectorAll('img[data-src]');
-    
-    if (lazyImages.length > 0) {
-        const imageObserver = new IntersectionObserver(function(entries) {
+        // Handle unhandled promise rejections
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled Promise Rejection:', event.reason);
+            
+            // Report to analytics if available
+            if (SITE_CONFIG.features.analytics && typeof gtag !== 'undefined') {
+                gtag('event', 'exception', {
+                    description: 'Unhandled Promise Rejection: ' + event.reason,
+                    fatal: false
+                });
+            }
+        });
+    }
+
+    // Initialize core functionality
+    function initializeCore() {
+        // Set up viewport meta tag for mobile
+        setupViewport();
+        
+        // Initialize theme system
+        initializeTheme();
+        
+        // Setup browser detection
+        detectBrowser();
+        
+        // Setup device detection
+        detectDevice();
+        
+        // Initialize cache management
+        initializeCacheManagement();
+    }
+
+    // Initialize modules based on what's needed
+    function initializeModules() {
+        const pageType = detectPageType();
+        
+        // Always load navigation
+        initializeNavigation();
+        
+        // Load animations if enabled
+        if (SITE_CONFIG.features.animations) {
+            initializeAnimations();
+        }
+        
+        // Load smooth scroll if enabled
+        if (SITE_CONFIG.features.smoothScroll) {
+            initializeSmoothScroll();
+        }
+        
+        // Load form validation for pages with forms
+        if (document.querySelector('form[data-validate]')) {
+            initializeFormValidation();
+        }
+        
+        // Load character carousel for relevant pages
+        if (document.querySelector('.character-carousel')) {
+            initializeCharacterCarousel();
+        }
+        
+        // Load lazy loading if enabled
+        if (SITE_CONFIG.features.lazyLoading) {
+            initializeLazyLoading();
+        }
+        
+        // Page-specific initializations
+        switch (pageType) {
+            case 'home':
+                initializeHomePage();
+                break;
+            case 'book':
+                initializeBookPage();
+                break;
+            case 'character':
+                initializeCharacterPage();
+                break;
+            case 'contact':
+                initializeContactPage();
+                break;
+            case 'blog':
+                initializeBlogPage();
+                break;
+        }
+    }
+
+    // Initialize individual modules
+    function initializeNavigation() {
+        if (typeof window.Navigation !== 'undefined') {
+            moduleStates.navigation = true;
+            console.log('✓ Navigation module loaded');
+        } else {
+            console.warn('Navigation module not available');
+        }
+    }
+
+    function initializeAnimations() {
+        if (typeof window.Animations !== 'undefined') {
+            moduleStates.animations = true;
+            console.log('✓ Animations module loaded');
+        } else {
+            console.warn('Animations module not available');
+        }
+    }
+
+    function initializeSmoothScroll() {
+        if (typeof window.SmoothScroll !== 'undefined') {
+            moduleStates.smoothScroll = true;
+            console.log('✓ Smooth scroll module loaded');
+        } else {
+            console.warn('Smooth scroll module not available');
+        }
+    }
+
+    function initializeFormValidation() {
+        if (typeof window.FormValidation !== 'undefined') {
+            moduleStates.formValidation = true;
+            console.log('✓ Form validation module loaded');
+        } else {
+            console.warn('Form validation module not available');
+        }
+    }
+
+    function initializeCharacterCarousel() {
+        if (typeof window.CharacterCarousel !== 'undefined') {
+            moduleStates.characterCarousel = true;
+            console.log('✓ Character carousel module loaded');
+        } else {
+            console.warn('Character carousel module not available');
+        }
+    }
+
+    function initializeLazyLoading() {
+        if ('IntersectionObserver' in window) {
+            setupLazyImageLoading();
+            moduleStates.lazyLoading = true;
+            console.log('✓ Lazy loading initialized');
+        } else {
+            console.warn('Lazy loading not supported');
+        }
+    }
+
+    // Page-specific initializations
+    function initializeHomePage() {
+        console.log('Initializing home page...');
+        
+        // Initialize hero video if present
+        initializeHeroVideo();
+        
+        // Initialize testimonials carousel
+        initializeTestimonialsCarousel();
+        
+        // Initialize newsletter signup
+        initializeNewsletterSignup();
+        
+        // Initialize book preview
+        initializeBookPreview();
+    }
+
+    function initializeBookPage() {
+        console.log('Initializing book page...');
+        
+        // Initialize book gallery
+        initializeBookGallery();
+        
+        // Initialize purchase tracking
+        initializePurchaseTracking();
+        
+        // Initialize reading progress
+        initializeReadingProgress();
+    }
+
+    function initializeCharacterPage() {
+        console.log('Initializing character page...');
+        
+        // Initialize character interactions
+        initializeCharacterInteractions();
+        
+        // Initialize character comparison tool
+        initializeCharacterComparison();
+    }
+
+    function initializeContactPage() {
+        console.log('Initializing contact page...');
+        
+        // Initialize contact form enhancements
+        initializeContactFormEnhancements();
+        
+        // Initialize map if present
+        initializeContactMap();
+    }
+
+    function initializeBlogPage() {
+        console.log('Initializing blog page...');
+        
+        // Initialize blog search
+        initializeBlogSearch();
+        
+        // Initialize reading time calculator
+        initializeReadingTime();
+        
+        // Initialize social sharing
+        initializeSocialSharing();
+    }
+
+    // Setup third-party integrations
+    function setupIntegrations() {
+        // Google Analytics
+        if (SITE_CONFIG.features.analytics) {
+            setupGoogleAnalytics();
+        }
+        
+        // Social media integration
+        setupSocialMediaIntegration();
+        
+        // Email marketing integration
+        setupEmailMarketing();
+    }
+
+    // Setup accessibility features
+    function setupAccessibility() {
+        // Skip navigation link
+        createSkipNavigation();
+        
+        // Focus management
+        setupFocusManagement();
+        
+        // ARIA enhancements
+        enhanceARIA();
+        
+        // Keyboard navigation enhancements
+        setupKeyboardNavigation();
+        
+        // Screen reader announcements
+        setupScreenReaderAnnouncements();
+    }
+
+    // Setup SEO enhancements
+    function setupSEO() {
+        // Dynamic meta tags
+        updateMetaTags();
+        
+        // Structured data
+        addStructuredData();
+        
+        // Canonical URLs
+        setCanonicalURL();
+        
+        // Open Graph tags
+        updateOpenGraphTags();
+    }
+
+    // Setup performance optimizations
+    function setupPerformanceOptimizations() {
+        // Preload critical resources
+        if (SITE_CONFIG.performance.preloadCriticalResources) {
+            preloadCriticalResources();
+        }
+        
+        // Optimize images
+        if (SITE_CONFIG.performance.imageOptimization) {
+            optimizeImages();
+        }
+        
+        // Setup service worker
+        if (SITE_CONFIG.features.serviceWorker) {
+            setupServiceWorker();
+        }
+    }
+
+    // Utility functions
+    function detectPageType() {
+        const path = window.location.pathname;
+        
+        if (path === '/' || path === '/index.html') return 'home';
+        if (path.includes('/books/')) return 'book';
+        if (path.includes('/characters')) return 'character';
+        if (path.includes('/contact')) return 'contact';
+        if (path.includes('/blog/')) return 'blog';
+        if (path.includes('/about')) return 'about';
+        
+        return 'general';
+    }
+
+    function setupViewport() {
+        if (!document.querySelector('meta[name="viewport"]')) {
+            const viewport = document.createElement('meta');
+            viewport.name = 'viewport';
+            viewport.content = 'width=device-width, initial-scale=1.0';
+            document.head.appendChild(viewport);
+        }
+    }
+
+    function initializeTheme() {
+        // Check for saved theme preference or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        if (SITE_CONFIG.features.darkMode) {
+            setupThemeToggle();
+        }
+    }
+
+    function detectBrowser() {
+        const userAgent = navigator.userAgent;
+        let browserClass = '';
+        
+        if (userAgent.includes('Chrome')) {
+            browserClass = 'browser-chrome';
+        } else if (userAgent.includes('Firefox')) {
+            browserClass = 'browser-firefox';
+        } else if (userAgent.includes('Safari')) {
+            browserClass = 'browser-safari';
+        } else if (userAgent.includes('Edge')) {
+            browserClass = 'browser-edge';
+        }
+        
+        if (browserClass) {
+            document.documentElement.classList.add(browserClass);
+        }
+    }
+
+    function detectDevice() {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isTablet = /iPad|Android(?!.*Mobile)/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+            document.documentElement.classList.add('device-mobile');
+        } else if (isTablet) {
+            document.documentElement.classList.add('device-tablet');
+        } else {
+            document.documentElement.classList.add('device-desktop');
+        }
+    }
+
+    function setupLazyImageLoading() {
+        const images = document.querySelectorAll('img[data-src]');
+        
+        const imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
@@ -311,215 +498,128 @@ function initializeUtilities() {
             });
         });
         
-        lazyImages.forEach(img => {
-            imageObserver.observe(img);
-        });
+        images.forEach(img => imageObserver.observe(img));
     }
-    
-    // Back to top button
-    const backToTopButton = document.getElementById('back-to-top');
-    
-    if (backToTopButton) {
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.add('visible');
-            } else {
-                backToTopButton.classList.remove('visible');
-            }
+
+    function setupGoogleAnalytics() {
+        if (SITE_CONFIG.integrations.googleAnalytics && SITE_CONFIG.integrations.googleAnalytics !== 'GA_MEASUREMENT_ID') {
+            // Load Google Analytics
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${SITE_CONFIG.integrations.googleAnalytics}`;
+            document.head.appendChild(script);
+            
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', SITE_CONFIG.integrations.googleAnalytics);
+            
+            // Make gtag globally available
+            window.gtag = gtag;
+            
+            moduleStates.analytics = true;
+            console.log('✓ Google Analytics loaded');
+        }
+    }
+
+    function createSkipNavigation() {
+        const skipLink = document.createElement('a');
+        skipLink.href = '#main-content';
+        skipLink.className = 'skip-navigation sr-only';
+        skipLink.textContent = 'Skip to main content';
+        
+        skipLink.addEventListener('focus', () => {
+            skipLink.classList.remove('sr-only');
         });
         
-        backToTopButton.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        skipLink.addEventListener('blur', () => {
+            skipLink.classList.add('sr-only');
+        });
+        
+        document.body.insertBefore(skipLink, document.body.firstChild);
+    }
+
+    function reportPerformanceMetrics() {
+        // Report to analytics if available
+        if (moduleStates.analytics && typeof gtag !== 'undefined') {
+            gtag('event', 'timing_complete', {
+                name: 'page_load',
+                value: Math.round(performanceMetrics.fullyLoaded)
             });
-        });
-    }
-}
-
-// Active Navigation State Management
-function updateActiveNavigation() {
-    const currentPath = window.location.pathname;
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        
-        const linkPath = link.getAttribute('href');
-        
-        if (linkPath === currentPath || 
-            (currentPath.includes(linkPath) && linkPath !== '/')) {
-            link.classList.add('active');
-        }
-    });
-}
-
-// Input Validation
-function validateInput(input) {
-    const value = input.value.trim();
-    const type = input.type;
-    const required = input.hasAttribute('required');
-    
-    clearValidationError(input);
-    
-    if (required && !value) {
-        showError(input, 'This field is required');
-        return false;
-    }
-    
-    if (type === 'email' && value && !isValidEmail(value)) {
-        showError(input, 'Please enter a valid email address');
-        return false;
-    }
-    
-    if (input.hasAttribute('minlength')) {
-        const minLength = parseInt(input.getAttribute('minlength'));
-        if (value.length < minLength) {
-            showError(input, `Minimum ${minLength} characters required`);
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-// Error Display Functions
-function showError(input, message) {
-    clearValidationError(input);
-    
-    input.classList.add('error');
-    
-    const errorElement = document.createElement('div');
-    errorElement.className = 'error-message';
-    errorElement.textContent = message;
-    
-    input.parentNode.appendChild(errorElement);
-}
-
-function clearValidationError(input) {
-    input.classList.remove('error');
-    
-    const errorMessage = input.parentNode.querySelector('.error-message');
-    if (errorMessage) {
-        errorMessage.remove();
-    }
-}
-
-function showSuccess(form, message) {
-    const successElement = document.createElement('div');
-    successElement.className = 'success-message';
-    successElement.textContent = message;
-    
-    form.appendChild(successElement);
-    
-    setTimeout(() => {
-        successElement.remove();
-    }, 5000);
-}
-
-// Utility Helper Functions
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
-}
-
-// Analytics and Tracking
-function trackEvent(eventName, properties = {}) {
-    // Google Analytics 4 event tracking
-    if (typeof gtag !== 'undefined') {
-        gtag('event', eventName, properties);
-    }
-    
-    // Console log for development
-    console.log('Event tracked:', eventName, properties);
-}
-
-// Page Load Performance Monitoring
-function trackPageLoad() {
-    window.addEventListener('load', function() {
-        const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        
-        trackEvent('page_load_time', {
-            load_time: loadTime,
-            page_url: window.location.href
-        });
-    });
-}
-
-// Error Handling
-window.addEventListener('error', function(e) {
-    console.error('JavaScript error:', e.error);
-    
-    // Track errors (optional)
-    trackEvent('javascript_error', {
-        error_message: e.message,
-        error_source: e.filename,
-        error_line: e.lineno
-    });
-});
-
-// Responsive Image Loading
-function handleResponsiveImages() {
-    const images = document.querySelectorAll('img[data-sizes]');
-    
-    images.forEach(img => {
-        const sizes = JSON.parse(img.dataset.sizes);
-        const currentWidth = window.innerWidth;
-        
-        let selectedSrc = img.src;
-        
-        for (const breakpoint in sizes) {
-            if (currentWidth >= parseInt(breakpoint)) {
-                selectedSrc = sizes[breakpoint];
+            
+            if (performanceMetrics.firstContentfulPaint) {
+                gtag('event', 'timing_complete', {
+                    name: 'first_contentful_paint',
+                    value: Math.round(performanceMetrics.firstContentfulPaint)
+                });
             }
         }
         
-        if (selectedSrc !== img.src) {
-            img.src = selectedSrc;
-        }
-    });
-}
+        console.log('Performance Metrics:', performanceMetrics);
+    }
 
-// Initialize responsive images on load and resize
-window.addEventListener('load', handleResponsiveImages);
-window.addEventListener('resize', debounce(handleResponsiveImages, 250));
+    function finalizeInitialization() {
+        // Mark site as fully initialized
+        document.documentElement.classList.add('site-initialized');
+        
+        // Emit site ready event
+        const siteReadyEvent = new CustomEvent('siteReady', {
+            detail: {
+                modules: moduleStates,
+                performance: performanceMetrics,
+                config: SITE_CONFIG
+            }
+        });
+        document.dispatchEvent(siteReadyEvent);
+        
+        console.log('🎉 Site initialization complete!');
+        console.log('Loaded modules:', Object.keys(moduleStates).filter(key => moduleStates[key]));
+    }
 
-// Initialize page load tracking
-trackPageLoad();
+    // Placeholder functions for features to be implemented
+    function initializeCacheManagement() { /* Implementation needed */ }
+    function initializeHeroVideo() { /* Implementation needed */ }
+    function initializeTestimonialsCarousel() { /* Implementation needed */ }
+    function initializeNewsletterSignup() { /* Implementation needed */ }
+    function initializeBookPreview() { /* Implementation needed */ }
+    function initializeBookGallery() { /* Implementation needed */ }
+    function initializePurchaseTracking() { /* Implementation needed */ }
+    function initializeReadingProgress() { /* Implementation needed */ }
+    function initializeCharacterInteractions() { /* Implementation needed */ }
+    function initializeCharacterComparison() { /* Implementation needed */ }
+    function initializeContactFormEnhancements() { /* Implementation needed */ }
+    function initializeContactMap() { /* Implementation needed */ }
+    function initializeBlogSearch() { /* Implementation needed */ }
+    function initializeReadingTime() { /* Implementation needed */ }
+    function initializeSocialSharing() { /* Implementation needed */ }
+    function setupSocialMediaIntegration() { /* Implementation needed */ }
+    function setupEmailMarketing() { /* Implementation needed */ }
+    function setupFocusManagement() { /* Implementation needed */ }
+    function enhanceARIA() { /* Implementation needed */ }
+    function setupKeyboardNavigation() { /* Implementation needed */ }
+    function setupScreenReaderAnnouncements() { /* Implementation needed */ }
+    function updateMetaTags() { /* Implementation needed */ }
+    function addStructuredData() { /* Implementation needed */ }
+    function setCanonicalURL() { /* Implementation needed */ }
+    function updateOpenGraphTags() { /* Implementation needed */ }
+    function preloadCriticalResources() { /* Implementation needed */ }
+    function optimizeImages() { /* Implementation needed */ }
+    function setupServiceWorker() { /* Implementation needed */ }
+    function setupThemeToggle() { /* Implementation needed */ }
 
-// Export functions for use in other scripts
-window.AuthorWebsite = {
-    trackEvent: trackEvent,
-    validateInput: validateInput,
-    showError: showError,
-    clearValidationError: clearValidationError,
-    showSuccess: showSuccess,
-    isValidEmail: isValidEmail,
-    debounce: debounce,
-    throttle: throttle
-};
+    // Public API
+    window.Site = {
+        config: SITE_CONFIG,
+        modules: moduleStates,
+        performance: performanceMetrics,
+        init: init
+    };
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
