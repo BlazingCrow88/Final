@@ -1,1 +1,677 @@
+/* ===================================
+   DESKTOP RESPONSIVE STYLES
+   File: assets/css/responsive/desktop.css
+   =================================== */
 
+/* Desktop and Large Screen Styles */
+@media screen and (min-width: 1024px) {
+
+    /* Container and Layout */
+    .container {
+        padding: 0 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Enhanced Typography for Desktop */
+    .section-title {
+        font-size: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
+        line-height: 1.1;
+    }
+
+    .hero-subtitle {
+        font-size: 1.8rem;
+    }
+
+    .hero-description {
+        font-size: 1.2rem;
+    }
+
+    /* Navigation Desktop Enhancements */
+    .nav-container {
+        padding: 0 2rem;
+    }
+
+    .nav-list {
+        gap: 2rem;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        position: relative;
+    }
+
+    /* Enhanced hover effects for desktop */
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: #B7881F;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        width: 80%;
+    }
+
+    /* Dropdown Enhanced for Desktop */
+    .dropdown-menu {
+        min-width: 220px;
+        padding: 1rem 0;
+    }
+
+    .dropdown-item {
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+        padding-left: 2rem;
+        background: rgba(183, 136, 31, 0.1);
+    }
+
+    /* Hero Section Desktop Excellence */
+    .hero-content {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        min-height: calc(100vh - 80px);
+    }
+
+    .hero-text {
+        padding-right: 2rem;
+    }
+
+    .hero-book-cover {
+        max-width: 450px;
+        transition: all 0.4s ease;
+    }
+
+    .hero-book-cover:hover {
+        transform: translateY(-10px) rotateY(-8deg) scale(1.02);
+    }
+
+    .hero-cta {
+        gap: 2rem;
+    }
+
+    .hero-btn {
+        padding: 1.25rem 2.5rem;
+        font-size: 1.1rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .hero-btn:hover::before {
+        left: 100%;
+    }
+
+    /* About Section Desktop Layout */
+    .about-content {
+        grid-template-columns: 400px 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .author-text {
+        padding-left: 2rem;
+    }
+
+    .about-title {
+        font-size: 2.75rem;
+    }
+
+    .about-description {
+        font-size: 1.15rem;
+        line-height: 1.8;
+    }
+
+    /* Book Showcase Desktop Excellence */
+    .book-display {
+        grid-template-columns: 1fr 2fr;
+        gap: 5rem;
+        align-items: center;
+    }
+
+    .book-cover {
+        max-width: 400px;
+        transition: all 0.4s ease;
+    }
+
+    .book-cover:hover {
+        transform: translateY(-10px) rotateY(-5deg) scale(1.02);
+    }
+
+    .book-title {
+        font-size: 3.5rem;
+    }
+
+    .book-subtitle {
+        font-size: 1.6rem;
+    }
+
+    .book-metadata {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+        padding: 2.5rem;
+    }
+
+    .purchase-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .purchase-btn {
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .purchase-btn:hover {
+        transform: translateY(-3px);
+    }
+
+    /* Character Cards Desktop Excellence */
+    .character-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .character-card {
+        padding: 2.5rem;
+        transition: all 0.4s ease;
+        cursor: pointer;
+    }
+
+    .character-card::before {
+        opacity: 0;
+        transition: all 0.6s ease;
+    }
+
+    .character-card:hover::before {
+        opacity: 1;
+    }
+
+    .character-card:hover {
+        transform: translateY(-10px) scale(1.02);
+    }
+
+    .character-portrait {
+        width: 160px;
+        height: 160px;
+        transition: all 0.4s ease;
+    }
+
+    .character-card:hover .character-portrait {
+        transform: scale(1.1);
+    }
+
+    .character-name {
+        font-size: 1.5rem;
+    }
+
+    /* Character Carousel Desktop */
+    .character-carousel .swiper-slide {
+        width: 350px;
+        margin-right: 30px;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        width: 60px;
+        height: 60px;
+        margin-top: -30px;
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 24px;
+    }
+
+    /* Testimonials Desktop Excellence */
+    .testimonials-grid {
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .testimonial-card {
+        padding: 3rem;
+        transition: all 0.4s ease;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .testimonial-card::after {
+        font-size: 4rem;
+        top: 1rem;
+        left: 2rem;
+    }
+
+    .testimonial-stats {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 3rem;
+        padding: 3rem;
+    }
+
+    .stat-number {
+        font-size: 3.5rem;
+    }
+
+    /* Newsletter Desktop */
+    .newsletter-title {
+        font-size: 2.75rem;
+    }
+
+    .newsletter-form {
+        max-width: 600px;
+        gap: 1.5rem;
+    }
+
+    .newsletter-input {
+        flex: 1;
+        padding: 1.25rem 2rem;
+        font-size: 1.1rem;
+    }
+
+    .newsletter-btn {
+        padding: 1.25rem 2.5rem;
+        font-size: 1.1rem;
+    }
+
+    /* Forms Desktop Enhancement */
+    .form-row {
+        gap: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 1.25rem 3rem;
+        font-size: 1.1rem;
+    }
+
+    /* Footer Desktop */
+    .footer-content {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+    }
+
+    .footer-section-title {
+        font-size: 1.2rem;
+    }
+
+    /* Book Pages Desktop Excellence */
+    .page-title {
+        font-size: 4rem;
+    }
+
+    .page-subtitle {
+        font-size: 1.4rem;
+    }
+
+    .book-details-grid {
+        grid-template-columns: 450px 1fr;
+        gap: 4rem;
+    }
+
+    .book-cover-section {
+        position: sticky;
+        top: 6rem;
+    }
+
+    .book-cover-main {
+        transition: all 0.4s ease;
+    }
+
+    .book-cover-main:hover {
+        transform: translateY(-5px) scale(1.02);
+    }
+
+    .book-info-section {
+        padding: 3rem;
+    }
+
+    .section-title {
+        font-size: 2.25rem;
+    }
+
+    .purchase-section {
+        padding: 2.5rem;
+    }
+
+    /* Advanced Desktop Layouts */
+    .content-three-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 3rem;
+    }
+
+    .content-four-column {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+
+    .main-content-with-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 4rem;
+    }
+
+    .sidebar {
+        position: sticky;
+        top: 6rem;
+        height: fit-content;
+    }
+
+    /* Advanced Grid Layouts */
+    .masonry-grid {
+        columns: 3;
+        column-gap: 2rem;
+        break-inside: avoid;
+    }
+
+    .masonry-item {
+        margin-bottom: 2rem;
+        break-inside: avoid;
+    }
+
+    /* Image Galleries Desktop */
+    .image-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .image-gallery-large {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+
+    /* Video Enhancements */
+    .video-container {
+        max-width: 800px;
+    }
+
+    .video-grid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 3rem;
+    }
+
+    /* Blog Layout Desktop */
+    .blog-post-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 3rem;
+    }
+
+    .blog-post-featured {
+        grid-column: 1 / -1;
+    }
+
+    /* Media Kit Desktop */
+    .media-kit-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+    }
+
+    /* Contact Page Desktop */
+    .contact-form-container {
+        max-width: 700px;
+    }
+
+    .contact-info-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+    }
+
+    /* Advanced Hover Effects */
+    .card-hover-effect {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-hover-effect::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(183, 136, 31, 0.1) 50%, transparent 70%);
+        opacity: 0;
+        transition: all 0.6s ease;
+        transform: rotate(-45deg);
+    }
+
+    .card-hover-effect:hover::before {
+        opacity: 1;
+        transform: rotate(-45deg) translate(50%, 50%);
+    }
+
+    .card-hover-effect:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Parallax Effects */
+    .parallax-container {
+        height: 400px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .parallax-element {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 120%;
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    /* Advanced Typography */
+    .drop-cap::first-letter {
+        float: left;
+        font-family: 'Cinzel', serif;
+        font-size: 4rem;
+        line-height: 1;
+        padding-right: 0.5rem;
+        padding-top: 0.25rem;
+        color: #B7881F;
+    }
+
+    /* Multi-column Text */
+    .text-columns {
+        column-count: 2;
+        column-gap: 3rem;
+        column-rule: 1px solid rgba(183, 136, 31, 0.2);
+    }
+
+    .text-columns-three {
+        column-count: 3;
+        column-gap: 2rem;
+        column-rule: 1px solid rgba(183, 136, 31, 0.2);
+    }
+
+    /* Desktop Performance Optimizations */
+    .will-change-transform {
+        will-change: transform;
+    }
+
+    .gpu-accelerated {
+        transform: translate3d(0, 0, 0);
+    }
+
+    /* Advanced Animations */
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+
+    .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Desktop Reading Experience */
+    .reading-content {
+        max-width: 750px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-size: 1.1rem;
+    }
+
+    .reading-content p {
+        margin-bottom: 1.75rem;
+    }
+
+    /* Desktop Navigation Enhancements */
+    .mega-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(27, 67, 50, 0.98);
+        backdrop-filter: blur(15px);
+        border-top: 1px solid rgba(183, 136, 31, 0.3);
+        padding: 3rem 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+    }
+
+    .nav-item.mega-menu-trigger:hover .mega-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .mega-menu-content {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* Desktop Accessibility Enhancements */
+    .focus-visible-enhanced:focus-visible {
+        outline: 3px solid #B7881F;
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
+
+    /* Print Optimizations */
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+
+        .print-break-before {
+            page-break-before: always;
+        }
+
+        .print-break-after {
+            page-break-after: always;
+        }
+
+        .print-avoid-break {
+            page-break-inside: avoid;
+        }
+    }
+}
+
+/* Large Desktop Screens */
+@media screen and (min-width: 1400px) {
+    .container {
+        max-width: 1400px;
+        padding: 0 3rem;
+    }
+
+    .hero-title {
+        font-size: 5rem;
+    }
+
+    .section-title {
+        font-size: 3.5rem;
+    }
+
+    .character-grid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+
+    .testimonials-grid {
+        grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    }
+}
+
+/* Ultra-wide Desktop Screens */
+@media screen and (min-width: 1800px) {
+    .container {
+        max-width: 1600px;
+    }
+
+    .hero-content {
+        gap: 6rem;
+    }
+
+    .character-grid {
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 3rem;
+    }
+
+    .testimonials-grid {
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 3rem;
+    }
+}
