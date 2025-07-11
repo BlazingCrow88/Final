@@ -1,0 +1,426 @@
+/* ===================================
+   BLOG POST TEMPLATE
+   File: blog-post.html
+   =================================== */
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{post_title}} - Author Name Blog</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{{post_excerpt}}">
+    <meta name="keywords" content="{{post_tags}}">
+    <meta name="author" content="{{post_author}}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{post_url}}">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{{post_title}}">
+    <meta property="og:description" content="{{post_excerpt}}">
+    <meta property="og:image" content="{{post_featured_image}}">
+    <meta property="og:url" content="{{post_url}}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Author Name Blog">
+    <meta property="article:author" content="{{post_author}}">
+    <meta property="article:published_time" content="{{post_published_date}}">
+    <meta property="article:modified_time" content="{{post_modified_date}}">
+    <meta property="article:section" content="{{post_category}}">
+    <meta property="article:tag" content="{{post_tags}}">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{post_title}}">
+    <meta name="twitter:description" content="{{post_excerpt}}">
+    <meta name="twitter:image" content="{{post_featured_image}}">
+    <meta name="twitter:creator" content="@authorhandle">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github.min.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "{{post_title}}",
+        "description": "{{post_excerpt}}",
+        "image": "{{post_featured_image}}",
+        "author": {
+            "@type": "Person",
+            "name": "{{post_author}}"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Author Name",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{site_logo}}"
+            }
+        },
+        "datePublished": "{{post_published_date}}",
+        "dateModified": "{{post_modified_date}}",
+        "articleSection": "{{post_category}}",
+        "keywords": "{{post_tags}}",
+        "url": "{{post_url}}"
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">Author Name</a>
+                <div class="nav-menu">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="books.html" class="nav-link">Books</a>
+                    <a href="blog.html" class="nav-link active">Blog</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="blog-post-page">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <div class="container">
+                <ol class="breadcrumb-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="{{category_url}}">{{post_category}}</a></li>
+                    <li aria-current="page">{{post_title}}</li>
+                </ol>
+            </div>
+        </nav>
+
+        <article class="blog-post">
+            <div class="container">
+                <!-- Post Header -->
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-category">
+                            <a href="{{category_url}}">{{post_category}}</a>
+                        </span>
+                        <time datetime="{{post_published_date}}" class="post-date">
+                            {{post_formatted_date}}
+                        </time>
+                        <span class="reading-time">{{reading_time}} min read</span>
+                    </div>
+                    
+                    <h1 class="post-title">{{post_title}}</h1>
+                    
+                    <div class="post-excerpt">
+                        <p>{{post_excerpt}}</p>
+                    </div>
+                    
+                    <!-- Featured Image -->
+                    <div class="post-featured-image">
+                        <img src="{{post_featured_image}}" alt="{{post_title}}" loading="lazy">
+                        <div class="image-caption">{{featured_image_caption}}</div>
+                    </div>
+                    
+                    <!-- Author Info -->
+                    <div class="post-author-info">
+                        <img src="{{author_avatar}}" alt="{{post_author}}" class="author-avatar">
+                        <div class="author-details">
+                            <h3 class="author-name">{{post_author}}</h3>
+                            <p class="author-bio">{{author_bio}}</p>
+                            <div class="author-social">
+                                <a href="{{author_twitter}}" target="_blank" rel="noopener">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="{{author_linkedin}}" target="_blank" rel="noopener">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                <a href="{{author_website}}" target="_blank" rel="noopener">
+                                    <i class="fas fa-globe"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Post Content -->
+                <div class="post-content">
+                    {{post_content}}
+                </div>
+
+                <!-- Post Footer -->
+                <footer class="post-footer">
+                    <!-- Tags -->
+                    <div class="post-tags">
+                        <h3>Tags:</h3>
+                        <div class="tag-list">
+                            {{#each post_tags_array}}
+                            <a href="{{tag_url}}" class="tag">{{tag_name}}</a>
+                            {{/each}}
+                        </div>
+                    </div>
+
+                    <!-- Share Buttons -->
+                    <div class="post-share">
+                        <h3>Share this post:</h3>
+                        <div class="share-buttons">
+                            <a href="https://twitter.com/intent/tweet?url={{encoded_post_url}}&text={{encoded_post_title}}" 
+                               target="_blank" rel="noopener" class="share-btn twitter">
+                                <i class="fab fa-twitter"></i>
+                                <span>Twitter</span>
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{encoded_post_url}}" 
+                               target="_blank" rel="noopener" class="share-btn facebook">
+                                <i class="fab fa-facebook-f"></i>
+                                <span>Facebook</span>
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{encoded_post_url}}" 
+                               target="_blank" rel="noopener" class="share-btn linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="mailto:?subject={{encoded_post_title}}&body=Check out this post: {{encoded_post_url}}" 
+                               class="share-btn email">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </a>
+                            <button class="share-btn copy-link" data-url="{{post_url}}">
+                                <i class="fas fa-link"></i>
+                                <span>Copy Link</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Newsletter Signup -->
+                    <div class="post-newsletter">
+                        <h3>Stay Updated</h3>
+                        <p>Get notified when new posts are published.</p>
+                        <form class="newsletter-form inline-form">
+                            <input type="email" name="email" placeholder="Enter your email" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </footer>
+            </div>
+        </article>
+
+        <!-- Related Posts -->
+        <section class="related-posts">
+            <div class="container">
+                <h2>Related Posts</h2>
+                <div class="related-posts-grid">
+                    {{#each related_posts}}
+                    <article class="related-post-card">
+                        <a href="{{post_url}}" class="post-link">
+                            <div class="post-image">
+                                <img src="{{featured_image}}" alt="{{title}}" loading="lazy">
+                            </div>
+                            <div class="post-info">
+                                <h3>{{title}}</h3>
+                                <p>{{excerpt}}</p>
+                                <div class="post-meta">
+                                    <time datetime="{{published_date}}">{{formatted_date}}</time>
+                                    <span class="reading-time">{{reading_time}} min read</span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                    {{/each}}
+                </div>
+            </div>
+        </section>
+
+        <!-- Comments Section -->
+        <section class="comments-section" id="comments">
+            <div class="container">
+                <h2>Comments</h2>
+                
+                <!-- Comment Form -->
+                <div class="comment-form-container">
+                    <h3>Leave a Comment</h3>
+                    <form class="comment-form" id="commentForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="commentName">Name *</label>
+                                <input type="text" id="commentName" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="commentEmail">Email *</label>
+                                <input type="email" id="commentEmail" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="commentWebsite">Website</label>
+                            <input type="url" id="commentWebsite" name="website">
+                        </div>
+                        <div class="form-group">
+                            <label for="commentMessage">Comment *</label>
+                            <textarea id="commentMessage" name="message" rows="5" required 
+                                      placeholder="Share your thoughts..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="notify" value="1">
+                                <span class="checkmark"></span>
+                                Notify me of new comments via email
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                </div>
+
+                <!-- Comments List -->
+                <div class="comments-list" id="commentsList">
+                    {{#each comments}}
+                    <article class="comment" data-comment-id="{{id}}">
+                        <div class="comment-avatar">
+                            <img src="{{avatar_url}}" alt="{{author_name}}" loading="lazy">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <h4 class="comment-author">{{author_name}}</h4>
+                                <time datetime="{{created_date}}" class="comment-date">
+                                    {{formatted_date}}
+                                </time>
+                            </div>
+                            <div class="comment-text">
+                                {{comment_text}}
+                            </div>
+                            <div class="comment-actions">
+                                <button class="reply-btn" data-comment-id="{{id}}">Reply</button>
+                                <button class="like-btn" data-comment-id="{{id}}">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="like-count">{{like_count}}</span>
+                                </button>
+                            </div>
+                            
+                            <!-- Replies -->
+                            {{#if replies}}
+                            <div class="comment-replies">
+                                {{#each replies}}
+                                <article class="comment reply" data-comment-id="{{id}}">
+                                    <div class="comment-avatar">
+                                        <img src="{{avatar_url}}" alt="{{author_name}}" loading="lazy">
+                                    </div>
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <h5 class="comment-author">{{author_name}}</h5>
+                                            <time datetime="{{created_date}}" class="comment-date">
+                                                {{formatted_date}}
+                                            </time>
+                                        </div>
+                                        <div class="comment-text">
+                                            {{comment_text}}
+                                        </div>
+                                    </div>
+                                </article>
+                                {{/each}}
+                            </div>
+                            {{/if}}
+                        </div>
+                    </article>
+                    {{/each}}
+                </div>
+
+                <!-- Load More Comments -->
+                <div class="load-more-comments">
+                    <button class="btn btn-outline" id="loadMoreComments">Load More Comments</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation to Previous/Next Posts -->
+        <nav class="post-navigation">
+            <div class="container">
+                <div class="nav-links">
+                    {{#if previous_post}}
+                    <a href="{{previous_post.url}}" class="nav-link prev-post">
+                        <i class="fas fa-arrow-left"></i>
+                        <div class="nav-post-info">
+                            <span class="nav-label">Previous Post</span>
+                            <span class="nav-title">{{previous_post.title}}</span>
+                        </div>
+                    </a>
+                    {{/if}}
+                    
+                    {{#if next_post}}
+                    <a href="{{next_post.url}}" class="nav-link next-post">
+                        <div class="nav-post-info">
+                            <span class="nav-label">Next Post</span>
+                            <span class="nav-title">{{next_post.title}}</span>
+                        </div>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    {{/if}}
+                </div>
+            </div>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Author Name</h3>
+                <p>Award-winning author of mystery and thriller novels.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="books.html">Books</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with the latest news and releases.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Author Name. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-of-service.html">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="blog-navigation.js"></script>
+    <script src="comments.js"></script>
+    <script src="newsletter-signup.js"></script>
+    <script src="main.js"></script>
+    
+    <!-- Progressive Enhancement -->
+    <script>
+        // Reading progress indicator
+        const progressBar = document.createElement('div');
+        progressBar.className = 'reading-progress';
+        document.body.appendChild(progressBar);
+        
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            progressBar.style.width = Math.min(scrolled, 100) + '%';
+        });
+    </script>
+</body>
+</html>
