@@ -1,0 +1,621 @@
+/* ===================================
+   USER LOGIN PAGE
+   File: login.html
+   =================================== */
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Author Name</title>
+    <meta name="description" content="Sign in to your account to access exclusive content and manage your purchases.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-header {
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: #666;
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group.error input {
+            border-color: #e74c3c;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .login-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .social-login {
+            margin: 30px 0;
+        }
+        
+        .social-login h3 {
+            color: #666;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .social-login h3::before,
+        .social-login h3::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #e1e5e9;
+        }
+        
+        .social-login h3::before {
+            left: 0;
+        }
+        
+        .social-login h3::after {
+            right: 0;
+        }
+        
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .signup-link {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .signup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .back-home:hover {
+            text-decoration: underline;
+        }
+        
+        .loading-spinner {
+            display: none;
+            margin-right: 10px;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <a href="index.html" class="back-home">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+        
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Sign in to your account</p>
+            </div>
+
+            <div id="loginAlerts">
+                <!-- Alerts will be displayed here -->
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        Remember me
+                    </label>
+                    <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <i class="fas fa-spinner fa-spin loading-spinner"></i>
+                    Sign In
+                </button>
+            </form>
+
+            <div class="social-login">
+                <h3>Or continue with</h3>
+                <div class="social-buttons">
+                    <a href="#" class="social-btn" id="googleLogin">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </a>
+                    <a href="#" class="social-btn" id="facebookLogin">
+                        <i class="fab fa-facebook-f"></i>
+                        Facebook
+                    </a>
+                </div>
+            </div>
+
+            <div class="signup-link">
+                Don't have an account? <a href="register.html">Sign up here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Two-Factor Authentication Modal -->
+    <div class="modal" id="twoFactorModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Two-Factor Authentication</h3>
+            </div>
+            <div class="modal-body">
+                <p>Please enter the verification code from your authenticator app:</p>
+                <form id="twoFactorForm">
+                    <div class="form-group">
+                        <label for="verificationCode">Verification Code</label>
+                        <input type="text" id="verificationCode" name="verificationCode" 
+                               maxlength="6" pattern="[0-9]{6}" autocomplete="one-time-code">
+                    </div>
+                    <button type="submit" class="login-btn">Verify</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="form-validation.js"></script>
+    <script>
+        class LoginManager {
+            constructor() {
+                this.form = document.getElementById('loginForm');
+                this.loginBtn = document.getElementById('loginBtn');
+                this.alertsContainer = document.getElementById('loginAlerts');
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.checkAuthState();
+                this.handleUrlParams();
+            }
+
+            bindEvents() {
+                this.form.addEventListener('submit', (e) => this.handleLogin(e));
+                
+                // Social login buttons
+                document.getElementById('googleLogin').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleSocialLogin('google');
+                });
+                
+                document.getElementById('facebookLogin').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleSocialLogin('facebook');
+                });
+
+                // Real-time validation
+                document.getElementById('email').addEventListener('blur', () => this.validateEmail());
+                document.getElementById('password').addEventListener('blur', () => this.validatePassword());
+
+                // Enter key on password field
+                document.getElementById('password').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.form.dispatchEvent(new Event('submit'));
+                    }
+                });
+            }
+
+            async handleLogin(e) {
+                e.preventDefault();
+                
+                if (!this.validateForm()) {
+                    return;
+                }
+
+                this.setLoading(true);
+                this.clearAlerts();
+
+                try {
+                    const formData = new FormData(this.form);
+                    const credentials = {
+                        email: formData.get('email'),
+                        password: formData.get('password'),
+                        rememberMe: formData.get('rememberMe') === 'on'
+                    };
+
+                    const response = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(credentials)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        if (result.requiresTwoFactor) {
+                            this.showTwoFactorModal(result.sessionToken);
+                        } else {
+                            this.handleSuccessfulLogin(result);
+                        }
+                    } else {
+                        this.showAlert(result.message || 'Login failed', 'error');
+                    }
+
+                } catch (error) {
+                    console.error('Login error:', error);
+                    this.showAlert('Network error. Please try again.', 'error');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            validateForm() {
+                let isValid = true;
+
+                if (!this.validateEmail()) {
+                    isValid = false;
+                }
+
+                if (!this.validatePassword()) {
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            validateEmail() {
+                const email = document.getElementById('email');
+                const emailError = document.getElementById('emailError');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!email.value.trim()) {
+                    this.showFieldError(email, emailError, 'Email is required');
+                    return false;
+                } else if (!emailRegex.test(email.value)) {
+                    this.showFieldError(email, emailError, 'Please enter a valid email address');
+                    return false;
+                } else {
+                    this.clearFieldError(email, emailError);
+                    return true;
+                }
+            }
+
+            validatePassword() {
+                const password = document.getElementById('password');
+                const passwordError = document.getElementById('passwordError');
+
+                if (!password.value.trim()) {
+                    this.showFieldError(password, passwordError, 'Password is required');
+                    return false;
+                } else {
+                    this.clearFieldError(password, passwordError);
+                    return true;
+                }
+            }
+
+            showFieldError(field, errorElement, message) {
+                field.parentElement.classList.add('error');
+                errorElement.textContent = message;
+            }
+
+            clearFieldError(field, errorElement) {
+                field.parentElement.classList.remove('error');
+                errorElement.textContent = '';
+            }
+
+            async handleSocialLogin(provider) {
+                try {
+                    // Redirect to social login endpoint
+                    window.location.href = `/api/auth/${provider}`;
+                } catch (error) {
+                    this.showAlert(`${provider} login failed`, 'error');
+                }
+            }
+
+            showTwoFactorModal(sessionToken) {
+                const modal = document.getElementById('twoFactorModal');
+                modal.style.display = 'flex';
+                
+                const twoFactorForm = document.getElementById('twoFactorForm');
+                twoFactorForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    await this.verifyTwoFactor(sessionToken);
+                };
+            }
+
+            async verifyTwoFactor(sessionToken) {
+                const code = document.getElementById('verificationCode').value;
+                
+                try {
+                    const response = await fetch('/api/auth/verify-2fa', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            sessionToken: sessionToken,
+                            code: code
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        this.handleSuccessfulLogin(result);
+                    } else {
+                        this.showAlert(result.message || 'Invalid verification code', 'error');
+                    }
+                } catch (error) {
+                    this.showAlert('Verification failed. Please try again.', 'error');
+                }
+            }
+
+            handleSuccessfulLogin(result) {
+                // Store authentication token
+                if (result.token) {
+                    localStorage.setItem('authToken', result.token);
+                }
+
+                // Store user data
+                if (result.user) {
+                    localStorage.setItem('userData', JSON.stringify(result.user));
+                }
+
+                this.showAlert('Login successful! Redirecting...', 'success');
+
+                // Redirect after short delay
+                setTimeout(() => {
+                    const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '/';
+                    window.location.href = redirectUrl;
+                }, 1500);
+            }
+
+            checkAuthState() {
+                const token = localStorage.getItem('authToken');
+                if (token) {
+                    // User is already logged in, redirect
+                    const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '/';
+                    window.location.href = redirectUrl;
+                }
+            }
+
+            handleUrlParams() {
+                const params = new URLSearchParams(window.location.search);
+                
+                if (params.get('logout') === 'success') {
+                    this.showAlert('You have been logged out successfully', 'info');
+                }
+
+                if (params.get('session') === 'expired') {
+                    this.showAlert('Your session has expired. Please log in again.', 'info');
+                }
+
+                if (params.get('registered') === 'success') {
+                    this.showAlert('Registration successful! Please log in with your credentials.', 'success');
+                }
+            }
+
+            setLoading(loading) {
+                const spinner = this.loginBtn.querySelector('.loading-spinner');
+                
+                if (loading) {
+                    this.loginBtn.disabled = true;
+                    spinner.style.display = 'inline-block';
+                    this.loginBtn.textContent = ' Signing In...';
+                    this.loginBtn.prepend(spinner);
+                } else {
+                    this.loginBtn.disabled = false;
+                    spinner.style.display = 'none';
+                    this.loginBtn.textContent = 'Sign In';
+                }
+            }
+
+            showAlert(message, type) {
+                const alert = document.createElement('div');
+                alert.className = `alert ${type}`;
+                alert.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    ${message}
+                `;
+                
+                this.alertsContainer.appendChild(alert);
+
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.remove();
+                    }
+                }, 5000);
+            }
+
+            clearAlerts() {
+                this.alertsContainer.innerHTML = '';
+            }
+        }
+
+        // Initialize login manager
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginManager();
+        });
+    </script>
+</body>
+</html>
