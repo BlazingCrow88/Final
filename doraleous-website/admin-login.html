@@ -1,0 +1,927 @@
+/* ===================================
+   ADMIN LOGIN PAGE
+   File: admin-login.html
+   =================================== */
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Author Name</title>
+    <meta name="description" content="Administrative access to website management tools.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .admin-login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+        }
+
+        .admin-header {
+            margin-bottom: 40px;
+        }
+
+        .admin-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 36px;
+        }
+
+        .admin-header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .admin-header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+
+        .security-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .security-notice .notice-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            color: #856404;
+            font-weight: 600;
+        }
+
+        .security-notice p {
+            color: #856404;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            padding-right: 50px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group.error input {
+            border-color: #e74c3c;
+            background: #fdf2f2;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #95a5a6;
+            font-size: 18px;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #667eea;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .remember-admin {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .custom-checkbox.checked {
+            background: #667eea;
+            border-color: #667eea;
+        }
+
+        .custom-checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .session-timeout {
+            color: #7f8c8d;
+        }
+
+        .admin-login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .admin-login-btn:active {
+            transform: translateY(0);
+        }
+
+        .admin-login-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .security-features {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .security-features h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .security-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #5a6c7d;
+        }
+
+        .security-feature i {
+            color: #27ae60;
+            width: 16px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: left;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .failed-attempts {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+            display: none;
+        }
+
+        .failed-attempts h5 {
+            color: #721c24;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .failed-attempts p {
+            color: #721c24;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .back-to-site {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .back-to-site:hover {
+            color: white;
+        }
+
+        @media (max-width: 480px) {
+            .admin-login-container {
+                padding: 30px 25px;
+            }
+
+            .admin-header h1 {
+                font-size: 24px;
+            }
+
+            .form-options {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+
+        .ip-whitelist-info {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: left;
+            display: none;
+        }
+
+        .ip-whitelist-info h5 {
+            color: #0c5460;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ip-whitelist-info p {
+            color: #0c5460;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-to-site">
+        <i class="fas fa-arrow-left"></i>
+        Back to Website
+    </a>
+
+    <div class="admin-login-container">
+        <div class="admin-header">
+            <div class="admin-logo">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1>Admin Portal</h1>
+            <p>Secure administrative access</p>
+        </div>
+
+        <div class="security-notice">
+            <div class="notice-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Security Notice</span>
+            </div>
+            <p>This is a restricted area. All access attempts are logged and monitored. Unauthorized access is prohibited.</p>
+        </div>
+
+        <div id="loginAlerts"></div>
+
+        <form id="adminLoginForm" novalidate>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-container">
+                    <input type="text" id="username" name="username" required autocomplete="username" autofocus>
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+                <div class="error-message" id="usernameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <i class="fas fa-eye password-toggle input-icon" id="passwordToggle"></i>
+                </div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <div class="form-options">
+                <label class="remember-admin">
+                    <div class="custom-checkbox" id="rememberCheckbox"></div>
+                    <input type="checkbox" id="rememberMe" name="rememberMe" style="display: none;">
+                    Remember for 30 days
+                </label>
+                <span class="session-timeout">Session: 8 hours</span>
+            </div>
+
+            <button type="submit" class="admin-login-btn" id="loginBtn">
+                <span>Access Admin Panel</span>
+                <div class="loading-overlay">
+                    <div class="spinner"></div>
+                </div>
+            </button>
+        </form>
+
+        <div class="failed-attempts" id="failedAttempts">
+            <h5>
+                <i class="fas fa-exclamation-circle"></i>
+                Too Many Failed Attempts
+            </h5>
+            <p>Account temporarily locked. Please try again in <span id="lockoutTime">15</span> minutes.</p>
+        </div>
+
+        <div class="security-features">
+            <h4>
+                <i class="fas fa-lock"></i>
+                Security Features
+            </h4>
+            <div class="security-feature">
+                <i class="fas fa-check"></i>
+                <span>Two-factor authentication</span>
+            </div>
+            <div class="security-feature">
+                <i class="fas fa-check"></i>
+                <span>IP address monitoring</span>
+            </div>
+            <div class="security-feature">
+                <i class="fas fa-check"></i>
+                <span>Session encryption</span>
+            </div>
+            <div class="security-feature">
+                <i class="fas fa-check"></i>
+                <span>Activity logging</span>
+            </div>
+        </div>
+
+        <div class="ip-whitelist-info" id="ipWhitelistInfo">
+            <h5>
+                <i class="fas fa-globe"></i>
+                IP Whitelist Active
+            </h5>
+            <p>Your IP address must be pre-approved for admin access. Contact the system administrator if you need access.</p>
+        </div>
+    </div>
+
+    <script>
+        class AdminLoginManager {
+            constructor() {
+                this.form = document.getElementById('adminLoginForm');
+                this.loginBtn = document.getElementById('loginBtn');
+                this.alertsContainer = document.getElementById('loginAlerts');
+                this.failedAttempts = 0;
+                this.maxAttempts = 5;
+                this.lockoutTime = 15; // minutes
+                this.isLocked = false;
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.checkLockoutStatus();
+                this.detectSuspiciousActivity();
+                this.setupPasswordToggle();
+                this.setupRememberCheckbox();
+            }
+
+            bindEvents() {
+                this.form.addEventListener('submit', (e) => this.handleLogin(e));
+                
+                // Real-time validation
+                document.getElementById('username').addEventListener('blur', () => this.validateUsername());
+                document.getElementById('password').addEventListener('blur', () => this.validatePassword());
+
+                // Enhanced security monitoring
+                document.addEventListener('contextmenu', (e) => {
+                    e.preventDefault(); // Disable right-click
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    // Disable F12, Ctrl+Shift+I, Ctrl+U
+                    if (e.key === 'F12' || 
+                        (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                        (e.ctrlKey && e.key === 'u')) {
+                        e.preventDefault();
+                    }
+                });
+            }
+
+            async handleLogin(e) {
+                e.preventDefault();
+                
+                if (this.isLocked) {
+                    this.showAlert('Account is temporarily locked. Please wait.', 'error');
+                    return;
+                }
+
+                if (!this.validateForm()) {
+                    return;
+                }
+
+                this.setLoading(true);
+                this.clearAlerts();
+
+                try {
+                    const formData = new FormData(this.form);
+                    const credentials = {
+                        username: formData.get('username'),
+                        password: formData.get('password'),
+                        rememberMe: formData.get('rememberMe') === 'on',
+                        fingerprint: await this.generateFingerprint(),
+                        timestamp: Date.now()
+                    };
+
+                    const response = await fetch('/api/admin/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(credentials)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        if (result.requiresTwoFactor) {
+                            this.handleTwoFactorRequired(result);
+                        } else {
+                            this.handleSuccessfulLogin(result);
+                        }
+                    } else {
+                        this.handleFailedLogin(result);
+                    }
+
+                } catch (error) {
+                    console.error('Admin login error:', error);
+                    this.showAlert('Network error. Please check your connection.', 'error');
+                    this.logSecurityEvent('network_error', { error: error.message });
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            handleSuccessfulLogin(result) {
+                // Store admin session data
+                sessionStorage.setItem('adminToken', result.token);
+                sessionStorage.setItem('adminUser', JSON.stringify(result.user));
+                sessionStorage.setItem('sessionExpiry', result.expiresAt);
+
+                // Log successful login
+                this.logSecurityEvent('admin_login_success', {
+                    username: result.user.username,
+                    ip: result.clientIP,
+                    userAgent: navigator.userAgent
+                });
+
+                this.showAlert('Login successful! Redirecting to admin panel...', 'success');
+
+                // Redirect to admin dashboard
+                setTimeout(() => {
+                    window.location.href = '/admin/dashboard.html';
+                }, 1500);
+            }
+
+            handleFailedLogin(result) {
+                this.failedAttempts++;
+                localStorage.setItem('adminFailedAttempts', this.failedAttempts);
+                localStorage.setItem('lastFailedAttempt', Date.now());
+
+                // Log failed attempt
+                this.logSecurityEvent('admin_login_failed', {
+                    username: document.getElementById('username').value,
+                    reason: result.message,
+                    attemptNumber: this.failedAttempts
+                });
+
+                if (this.failedAttempts >= this.maxAttempts) {
+                    this.lockAccount();
+                } else {
+                    const remaining = this.maxAttempts - this.failedAttempts;
+                    this.showAlert(
+                        `Login failed. ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining before lockout.`, 
+                        'error'
+                    );
+                }
+
+                // Clear password field
+                document.getElementById('password').value = '';
+            }
+
+            handleTwoFactorRequired(result) {
+                // Store temporary session token
+                sessionStorage.setItem('tempAdminToken', result.tempToken);
+                
+                // Redirect to 2FA page
+                window.location.href = '/admin/two-factor.html';
+            }
+
+            lockAccount() {
+                this.isLocked = true;
+                const lockoutEnd = Date.now() + (this.lockoutTime * 60 * 1000);
+                localStorage.setItem('adminLockoutEnd', lockoutEnd);
+
+                document.getElementById('failedAttempts').style.display = 'block';
+                this.form.style.display = 'none';
+
+                this.logSecurityEvent('admin_account_locked', {
+                    username: document.getElementById('username').value,
+                    lockoutDuration: this.lockoutTime
+                });
+
+                this.startLockoutCountdown();
+            }
+
+            checkLockoutStatus() {
+                const lockoutEnd = localStorage.getItem('adminLockoutEnd');
+                const failedAttempts = localStorage.getItem('adminFailedAttempts');
+
+                if (lockoutEnd && Date.now() < parseInt(lockoutEnd)) {
+                    this.isLocked = true;
+                    document.getElementById('failedAttempts').style.display = 'block';
+                    this.form.style.display = 'none';
+                    this.startLockoutCountdown();
+                } else if (lockoutEnd && Date.now() >= parseInt(lockoutEnd)) {
+                    // Lockout expired, reset
+                    localStorage.removeItem('adminLockoutEnd');
+                    localStorage.removeItem('adminFailedAttempts');
+                    this.failedAttempts = 0;
+                    this.isLocked = false;
+                } else if (failedAttempts) {
+                    this.failedAttempts = parseInt(failedAttempts);
+                }
+            }
+
+            startLockoutCountdown() {
+                const lockoutEnd = parseInt(localStorage.getItem('adminLockoutEnd'));
+                const timeElement = document.getElementById('lockoutTime');
+
+                const updateCountdown = () => {
+                    const remaining = Math.max(0, Math.ceil((lockoutEnd - Date.now()) / 60000));
+                    timeElement.textContent = remaining;
+
+                    if (remaining <= 0) {
+                        // Lockout expired
+                        localStorage.removeItem('adminLockoutEnd');
+                        localStorage.removeItem('adminFailedAttempts');
+                        this.isLocked = false;
+                        this.failedAttempts = 0;
+                        document.getElementById('failedAttempts').style.display = 'none';
+                        this.form.style.display = 'block';
+                        this.showAlert('Account unlocked. You may now attempt to log in.', 'success');
+                    } else {
+                        setTimeout(updateCountdown, 60000); // Update every minute
+                    }
+                };
+
+                updateCountdown();
+            }
+
+            detectSuspiciousActivity() {
+                // Check for rapid requests
+                const lastAttempt = localStorage.getItem('lastFailedAttempt');
+                if (lastAttempt && Date.now() - parseInt(lastAttempt) < 5000) {
+                    this.logSecurityEvent('suspicious_activity', { 
+                        type: 'rapid_requests',
+                        timeBetween: Date.now() - parseInt(lastAttempt)
+                    });
+                }
+
+                // Check user agent
+                if (navigator.userAgent.includes('bot') || navigator.userAgent.includes('crawler')) {
+                    this.logSecurityEvent('suspicious_activity', { 
+                        type: 'bot_detected',
+                        userAgent: navigator.userAgent
+                    });
+                }
+
+                // Check for automation tools
+                if (window.webdriver || window.phantom || window._phantom) {
+                    this.logSecurityEvent('suspicious_activity', { 
+                        type: 'automation_detected'
+                    });
+                }
+            }
+
+            async generateFingerprint() {
+                // Generate browser fingerprint for additional security
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.textBaseline = 'top';
+                ctx.font = '14px Arial';
+                ctx.fillText('Admin security check', 2, 2);
+                
+                const fingerprint = {
+                    screen: `${screen.width}x${screen.height}`,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    language: navigator.language,
+                    platform: navigator.platform,
+                    canvasData: canvas.toDataURL().slice(-50),
+                    plugins: Array.from(navigator.plugins).map(p => p.name).join(',')
+                };
+
+                return btoa(JSON.stringify(fingerprint));
+            }
+
+            setupPasswordToggle() {
+                const passwordToggle = document.getElementById('passwordToggle');
+                const passwordInput = document.getElementById('password');
+
+                passwordToggle.addEventListener('click', () => {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        passwordToggle.className = 'fas fa-eye-slash password-toggle input-icon';
+                    } else {
+                        passwordInput.type = 'password';
+                        passwordToggle.className = 'fas fa-eye password-toggle input-icon';
+                    }
+                });
+            }
+
+            setupRememberCheckbox() {
+                const checkbox = document.getElementById('rememberCheckbox');
+                const hiddenCheckbox = document.getElementById('rememberMe');
+
+                checkbox.addEventListener('click', () => {
+                    hiddenCheckbox.checked = !hiddenCheckbox.checked;
+                    checkbox.classList.toggle('checked', hiddenCheckbox.checked);
+                });
+            }
+
+            validateForm() {
+                let isValid = true;
+
+                if (!this.validateUsername()) {
+                    isValid = false;
+                }
+
+                if (!this.validatePassword()) {
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            validateUsername() {
+                const username = document.getElementById('username');
+                const usernameError = document.getElementById('usernameError');
+
+                if (!username.value.trim()) {
+                    this.showFieldError(username, usernameError, 'Username is required');
+                    return false;
+                } else if (username.value.length < 3) {
+                    this.showFieldError(username, usernameError, 'Username must be at least 3 characters');
+                    return false;
+                } else {
+                    this.clearFieldError(username, usernameError);
+                    return true;
+                }
+            }
+
+            validatePassword() {
+                const password = document.getElementById('password');
+                const passwordError = document.getElementById('passwordError');
+
+                if (!password.value.trim()) {
+                    this.showFieldError(password, passwordError, 'Password is required');
+                    return false;
+                } else {
+                    this.clearFieldError(password, passwordError);
+                    return true;
+                }
+            }
+
+            showFieldError(field, errorElement, message) {
+                field.parentElement.parentElement.classList.add('error');
+                errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            }
+
+            clearFieldError(field, errorElement) {
+                field.parentElement.parentElement.classList.remove('error');
+                errorElement.innerHTML = '';
+            }
+
+            setLoading(loading) {
+                const loadingOverlay = this.loginBtn.querySelector('.loading-overlay');
+                
+                if (loading) {
+                    this.loginBtn.disabled = true;
+                    loadingOverlay.style.display = 'flex';
+                } else {
+                    this.loginBtn.disabled = false;
+                    loadingOverlay.style.display = 'none';
+                }
+            }
+
+            showAlert(message, type) {
+                const alert = document.createElement('div');
+                alert.className = `alert ${type}`;
+                alert.style.display = 'block';
+                alert.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    ${message}
+                `;
+                
+                this.alertsContainer.appendChild(alert);
+
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.remove();
+                    }
+                }, 5000);
+            }
+
+            clearAlerts() {
+                this.alertsContainer.innerHTML = '';
+            }
+
+            logSecurityEvent(eventType, data) {
+                // Send security event to backend for logging
+                fetch('/api/admin/security-log', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        event: eventType,
+                        timestamp: new Date().toISOString(),
+                        ip: data.ip || 'unknown',
+                        userAgent: navigator.userAgent,
+                        data: data
+                    })
+                }).catch(error => {
+                    console.error('Failed to log security event:', error);
+                });
+            }
+        }
+
+        // Initialize admin login manager
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdminLoginManager();
+        });
+
+        // Additional security measures
+        window.addEventListener('beforeunload', () => {
+            // Clear sensitive data
+            if (window.performance && window.performance.navigation.type === 1) {
+                // Page refresh detected
+                sessionStorage.removeItem('tempAdminToken');
+            }
+        });
+    </script>
+</body>
+</html>
