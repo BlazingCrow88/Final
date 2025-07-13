@@ -1,4 +1,7 @@
-/* Navigation Component Styles */
+/* ===================================
+   NAVIGATION COMPONENT STYLES
+   File: assets/css/components/navigation.css
+   =================================== */
 
 /* Main Navigation Container */
 .main-navigation {
@@ -172,6 +175,8 @@
     padding: 0.5rem;
     border-radius: 4px;
     transition: background-color 0.3s ease;
+    border: none;
+    background: transparent;
 }
 
 .nav-toggle:hover {
@@ -187,6 +192,7 @@
     border-radius: 2px;
 }
 
+/* Hamburger Animation States */
 .nav-toggle.active .hamburger-line:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
@@ -323,6 +329,26 @@
     background: rgba(183, 136, 31, 0.1);
 }
 
+/* Mobile Menu State Management */
+body.menu-open {
+    overflow: hidden;
+}
+
+body.menu-open .nav-menu {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Focus States for Accessibility */
+.nav-link:focus,
+.nav-toggle:focus,
+.dropdown-link:focus,
+.brand-link:focus {
+    outline: 2px solid #B7881F;
+    outline-offset: 2px;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .nav-container {
@@ -397,6 +423,19 @@
     
     .nav-toggle {
         display: flex;
+    }
+    
+    /* Mobile Dropdown States */
+    .dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: block;
+        margin-top: 0.5rem;
+        margin-left: 1rem;
+        background: rgba(183, 136, 31, 0.05);
+        border-radius: 4px;
+        box-shadow: none;
     }
     
     .dropdown-menu {
@@ -479,23 +518,17 @@
     }
 }
 
-/* Body Class for Menu State */
-body.menu-open {
-    overflow: hidden;
+/* Progressive Enhancement - No JavaScript Fallback */
+.no-js .nav-menu {
+    display: flex !important;
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-body.menu-open .nav-menu {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Focus States for Accessibility */
-.nav-link:focus,
-.nav-toggle:focus,
-.dropdown-link:focus {
-    outline: 2px solid #B7881F;
-    outline-offset: 2px;
+.no-js .nav-toggle {
+    display: none !important;
 }
 
 /* High Contrast Mode Support */
