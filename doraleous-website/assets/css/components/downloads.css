@@ -1,0 +1,202 @@
+/* ===================================
+   DOWNLOADS & MEDIA KIT STYLES
+   File: assets/css/components/downloads.css
+   =================================== */
+
+/* Downloads Section */
+.downloads-section {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.downloads-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.download-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.download-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.download-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.download-title {
+    color: #1B4332;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.download-description {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.download-btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Media Kit Section */
+.media-kit-section {
+    padding: 4rem 0;
+    background: white;
+}
+
+.section-description {
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.media-resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin: 3rem 0;
+}
+
+.resource-category {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.category-title {
+    color: #1B4332;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #B7881F;
+    padding-bottom: 0.5rem;
+}
+
+.resource-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.resource-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.resource-link:hover {
+    background: #f0f0f0;
+    transform: translateX(5px);
+    text-decoration: none;
+    color: inherit;
+}
+
+.resource-icon {
+    font-size: 1.5rem;
+    min-width: 2rem;
+}
+
+.resource-info {
+    flex: 1;
+}
+
+.resource-info strong {
+    display: block;
+    color: #1B4332;
+    margin-bottom: 0.25rem;
+}
+
+.resource-info span {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Media Contact */
+.media-contact {
+    background: #1B4332;
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.media-contact h3 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.media-contact a {
+    color: #B7881F;
+    text-decoration: none;
+}
+
+.media-contact a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .downloads-section,
+    .media-kit-section {
+        padding: 3rem 0;
+    }
+    
+    .downloads-grid,
+    .media-resources-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .download-card,
+    .resource-category {
+        padding: 1.5rem;
+    }
+    
+    .resource-link {
+        padding: 0.75rem;
+    }
+    
+    .media-contact {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .download-card,
+    .resource-category {
+        padding: 1rem;
+    }
+    
+    .download-icon {
+        font-size: 2.5rem;
+    }
+    
+    .download-title {
+        font-size: 1.25rem;
+    }
+}
