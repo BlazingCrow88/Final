@@ -1,0 +1,519 @@
+/* ===================================
+   SOCIAL MEDIA SHARING STYLES
+   File: assets/css/components/social-sharing.css
+   =================================== */
+
+/**
+ * Social Media Sharing Button Styles for Doraleous and Associates
+ * Designed to match the fantasy theme with elegant, responsive design
+ */
+
+/* =================================
+   Share Buttons Container
+   ================================= */
+
+.share-buttons-wrapper {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.share-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 1rem 0;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+.share-button-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =================================
+   Individual Share Buttons
+   ================================= */
+
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #ffffff;
+    color: #2c3e50;
+    text-decoration: none;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-width: 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+}
+
+.share-btn:active {
+    transform: translateY(0);
+}
+
+.share-btn i {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.share-btn span {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+}
+
+/* =================================
+   Platform-Specific Colors
+   ================================= */
+
+.share-btn.twitter {
+    border-color: #1da1f2;
+    color: #1da1f2;
+}
+
+.share-btn.twitter:hover {
+    background: #1da1f2;
+    color: white;
+    border-color: #1da1f2;
+}
+
+.share-btn.facebook {
+    border-color: #1877f2;
+    color: #1877f2;
+}
+
+.share-btn.facebook:hover {
+    background: #1877f2;
+    color: white;
+    border-color: #1877f2;
+}
+
+.share-btn.pinterest {
+    border-color: #bd081c;
+    color: #bd081c;
+}
+
+.share-btn.pinterest:hover {
+    background: #bd081c;
+    color: white;
+    border-color: #bd081c;
+}
+
+.share-btn.reddit {
+    border-color: #ff4500;
+    color: #ff4500;
+}
+
+.share-btn.reddit:hover {
+    background: #ff4500;
+    color: white;
+    border-color: #ff4500;
+}
+
+.share-btn.email {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.share-btn.email:hover {
+    background: #6c757d;
+    color: white;
+    border-color: #6c757d;
+}
+
+.share-btn.copy-link {
+    border-color: #28a745;
+    color: #28a745;
+    background: white;
+}
+
+.share-btn.copy-link:hover {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.share-btn.copy-link.copied {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+/* =================================
+   Floating Share Bar
+   ================================= */
+
+.floating-share-bar {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+    border: 1px solid #e1e8ed;
+}
+
+.floating-share-bar.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.floating-share-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.share-text {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+}
+
+.floating-share-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid #e1e8ed;
+}
+
+.floating-share-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+}
+
+.floating-share-btn i {
+    font-size: 1rem;
+}
+
+/* Apply platform colors to floating buttons */
+.floating-share-btn.twitter {
+    color: #1da1f2;
+    border-color: #1da1f2;
+}
+
+.floating-share-btn.twitter:hover {
+    background: #1da1f2;
+    color: white;
+}
+
+.floating-share-btn.facebook {
+    color: #1877f2;
+    border-color: #1877f2;
+}
+
+.floating-share-btn.facebook:hover {
+    background: #1877f2;
+    color: white;
+}
+
+.floating-share-btn.pinterest {
+    color: #bd081c;
+    border-color: #bd081c;
+}
+
+.floating-share-btn.pinterest:hover {
+    background: #bd081c;
+    color: white;
+}
+
+/* =================================
+   Newsletter Message Styles
+   ================================= */
+
+.newsletter-message {
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.newsletter-message.success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.newsletter-message.error {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.message-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.message-content i {
+    font-size: 1.5rem;
+}
+
+.message-content p {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+}
+
+/* =================================
+   Blog Post Integration
+   ================================= */
+
+.blog-post .share-buttons-wrapper,
+.blog-post-card .share-buttons-wrapper {
+    margin-top: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.post-footer .share-buttons-wrapper {
+    margin-top: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 1rem 0;
+}
+
+/* =================================
+   Responsive Design
+   ================================= */
+
+@media (max-width: 768px) {
+    .share-button-list {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .share-btn {
+        width: 100%;
+        max-width: 200px;
+        justify-content: center;
+    }
+    
+    .floating-share-bar {
+        left: 10px;
+        padding: 0.75rem;
+    }
+    
+    .floating-share-btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .floating-share-btn i {
+        font-size: 0.9rem;
+    }
+    
+    .share-text {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .share-buttons-wrapper {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .share-title {
+        font-size: 1rem;
+    }
+    
+    .share-btn {
+        padding: 0.65rem 0.85rem;
+        font-size: 0.85rem;
+        min-width: 90px;
+    }
+    
+    .floating-share-bar {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        margin: 1rem 0;
+        box-shadow: none;
+        border: 1px solid #e1e8ed;
+    }
+    
+    .floating-share-content {
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .share-text {
+        writing-mode: initial;
+        text-orientation: initial;
+    }
+}
+
+/* =================================
+   Newsletter Form Enhancements
+   ================================= */
+
+.newsletter-form {
+    position: relative;
+}
+
+.newsletter-form button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.newsletter-form .fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* =================================
+   Fantasy Theme Enhancements
+   ================================= */
+
+.share-buttons-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #9b59b6, #e74c3c, #f39c12);
+    border-radius: 12px 12px 0 0;
+}
+
+.share-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.share-btn:hover::before {
+    left: 100%;
+}
+
+/* =================================
+   Dark Mode Support
+   ================================= */
+
+@media (prefers-color-scheme: dark) {
+    .share-buttons-wrapper {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        border-color: #4a5568;
+    }
+    
+    .share-title {
+        color: #e2e8f0;
+        border-color: #3498db;
+    }
+    
+    .share-btn {
+        background: #1a202c;
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
+    
+    .floating-share-bar {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+    
+    .floating-share-btn {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
+}
+
+/* =================================
+   Accessibility Improvements
+   ================================= */
+
+.share-btn:focus,
+.floating-share-btn:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+.share-btn:focus:not(:focus-visible),
+.floating-share-btn:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .share-btn {
+        border-width: 3px;
+    }
+    
+    .share-btn:hover {
+        border-width: 3px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .share-btn,
+    .floating-share-btn,
+    .floating-share-bar {
+        transition: none;
+    }
+    
+    .share-btn::before {
+        display: none;
+    }
+    
+    .fa-spinner {
+        animation: none;
+    }
+}
