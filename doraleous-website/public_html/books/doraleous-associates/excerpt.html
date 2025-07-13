@@ -38,8 +38,89 @@
     <!-- AOS Animation Library -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     
+    <!-- jsPDF Library for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../../assets/images/ui/favicon.ico">
+    
+    <style>
+        /* PDF Generation Styles */
+        .pdf-generating {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .pdf-generating::after {
+            content: 'Generating PDF...';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        
+        /* Newsletter Success Message */
+        .newsletter-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .newsletter-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        /* Reading modes */
+        .excerpt-text.dark-mode {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 30px;
+            border-radius: 8px;
+        }
+        
+        .excerpt-text.sepia-mode {
+            background: #f4f3e8;
+            color: #5c4b37;
+            padding: 30px;
+            border-radius: 8px;
+        }
+        
+        .excerpt-text.light-mode {
+            background: #ffffff;
+            color: #333333;
+            padding: 30px;
+            border-radius: 8px;
+        }
+        
+        /* Fullscreen reading */
+        .fullscreen-reading {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999;
+            padding: 40px;
+            overflow-y: auto;
+            font-size: 20px !important;
+            line-height: 1.8;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -144,7 +225,7 @@
                     </div>
                 </div>
                 
-                <div class="excerpt-text" id="excerpt-text">
+                <div class="excerpt-text light-mode" id="excerpt-text">
                     <p class="excerpt-paragraph first-paragraph">
                         <span class="drop-cap">T</span>he tavern's smoky air carried the familiar scents of ale, sweat, and secrets—the holy trinity of any establishment where sellswords gathered to ply their trade. Doraleous sat in his customary corner booth, back to the wall, eyes scanning the room with the practiced ease of someone who had survived too many attempted assassinations to count. The Gilded Griffin wasn't the finest tavern in Aldermere, but it served his purposes: discrete, defensible, and populated by the sort of people who minded their own business.
                     </p>
@@ -335,29 +416,6 @@
         </div>
     </section>
 
-    <!-- Reader Feedback -->
-    <section class="reader-feedback-section">
-        <div class="container">
-            <div class="feedback-content" data-aos="fade-up">
-                <h2 class="feedback-title">What Readers Are Saying</h2>
-                <div class="feedback-quotes">
-                    <div class="feedback-quote">
-                        <p class="quote-text">"I was hooked from the very first paragraph. The world-building is incredible!"</p>
-                        <span class="quote-author">- Sarah M., Amazon Review</span>
-                    </div>
-                    <div class="feedback-quote">
-                        <p class="quote-text">"Couldn't put it down after reading this excerpt. Immediately bought the full book."</p>
-                        <span class="quote-author">- Michael R., Goodreads</span>
-                    </div>
-                    <div class="feedback-quote">
-                        <p class="quote-text">"This excerpt convinced me to read the entire series. Brilliant character development!"</p>
-                        <span class="quote-author">- Emma L., BookBub</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Newsletter Signup -->
     <section class="newsletter-signup">
         <div class="container">
@@ -366,7 +424,7 @@
                 <p class="newsletter-description">
                     Subscribe to get exclusive excerpts, character backstories, and early access to new releases.
                 </p>
-                <form class="newsletter-form" id="newsletter-form">
+                <form class="newsletter-form" id="newsletter-form" method="POST" action="https://formspree.io/f/YOUR_FORM_ID">
                     <div class="form-group">
                         <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email address" required>
                         <button type="submit" class="btn btn-primary">Get Free Content</button>
@@ -374,6 +432,12 @@
                     <p class="newsletter-privacy">
                         Your privacy is important to us. We'll never share your email address.
                     </p>
+                    <div class="newsletter-success" id="newsletter-success">
+                        Thank you for subscribing! Check your email for a welcome message with exclusive content.
+                    </div>
+                    <div class="newsletter-error" id="newsletter-error">
+                        Sorry, there was an error subscribing. Please try again or contact us directly.
+                    </div>
                 </form>
             </div>
         </div>
@@ -449,7 +513,6 @@
     <!-- JavaScript Files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="../../assets/js/main.js"></script>
-    <script src="../../assets/js/components/newsletter-signup.js"></script>
     
     <!-- Excerpt Reading Experience JavaScript -->
     <script>
@@ -460,6 +523,9 @@
             const fontSizeDisplay = document.querySelector('.font-size-display');
             const downloadBtn = document.getElementById('download-pdf');
             const fullScreenBtn = document.getElementById('full-screen');
+            const newsletterForm = document.getElementById('newsletter-form');
+            const newsletterSuccess = document.getElementById('newsletter-success');
+            const newsletterError = document.getElementById('newsletter-error');
             
             // Reading mode switching
             readingOptions.forEach(option => {
@@ -473,33 +539,109 @@
                     // Apply reading mode
                     excerptText.className = `excerpt-text ${mode}-mode`;
                     
-                    // Track usage
-                    if (typeof AuthorWebsite !== 'undefined') {
-                        AuthorWebsite.trackEvent('reading_mode_change', {
-                            mode: mode,
-                            chapter: 'chapter-1'
-                        });
-                    }
+                    // Store preference
+                    localStorage.setItem('preferredReadingMode', mode);
                 });
             });
+            
+            // Load saved reading mode
+            const savedMode = localStorage.getItem('preferredReadingMode');
+            if (savedMode) {
+                const modeButton = document.querySelector(`[data-mode="${savedMode}"]`);
+                if (modeButton) {
+                    modeButton.click();
+                }
+            }
             
             // Font size control
             fontSizeSlider.addEventListener('input', function() {
                 const fontSize = this.value;
                 excerptText.style.fontSize = fontSize + 'px';
                 fontSizeDisplay.textContent = fontSize + 'px';
+                localStorage.setItem('preferredFontSize', fontSize);
             });
             
-            // Download PDF functionality
+            // Load saved font size
+            const savedFontSize = localStorage.getItem('preferredFontSize');
+            if (savedFontSize) {
+                fontSizeSlider.value = savedFontSize;
+                excerptText.style.fontSize = savedFontSize + 'px';
+                fontSizeDisplay.textContent = savedFontSize + 'px';
+            }
+            
+            // PDF Generation functionality
             downloadBtn.addEventListener('click', function() {
-                // In a real implementation, this would trigger a PDF download
-                alert('Downloading Chapter 1 PDF...');
+                // Add loading state
+                document.body.classList.add('pdf-generating');
                 
-                if (typeof AuthorWebsite !== 'undefined') {
-                    AuthorWebsite.trackEvent('excerpt_pdf_download', {
-                        chapter: 'chapter-1',
-                        source: 'excerpt_page'
+                // Create PDF using jsPDF
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF('p', 'mm', 'a4');
+                    
+                    // Add title
+                    doc.setFontSize(20);
+                    doc.text('Doraleous and Associates: A Tale of Glory', 20, 30);
+                    
+                    doc.setFontSize(14);
+                    doc.text('Chapter 1: The Crimson Contract', 20, 45);
+                    doc.text('by Brian M. Shoemaker', 20, 55);
+                    
+                    // Get excerpt content
+                    const excerptParagraphs = document.querySelectorAll('.excerpt-paragraph');
+                    let yPosition = 75;
+                    const lineHeight = 7;
+                    const pageHeight = 280;
+                    const margin = 20;
+                    const pageWidth = 170;
+                    
+                    doc.setFontSize(11);
+                    
+                    excerptParagraphs.forEach((paragraph, index) => {
+                        let text = paragraph.textContent.trim();
+                        
+                        // Remove drop cap formatting for PDF
+                        if (paragraph.classList.contains('first-paragraph')) {
+                            text = text.replace(/^T/, 'T');
+                        }
+                        
+                        // Split text into lines that fit the page width
+                        const lines = doc.splitTextToSize(text, pageWidth);
+                        
+                        lines.forEach(line => {
+                            // Check if we need a new page
+                            if (yPosition > pageHeight) {
+                                doc.addPage();
+                                yPosition = 30;
+                            }
+                            
+                            doc.text(line, margin, yPosition);
+                            yPosition += lineHeight;
+                        });
+                        
+                        // Add spacing between paragraphs
+                        yPosition += 5;
                     });
+                    
+                    // Add footer information
+                    const totalPages = doc.internal.getNumberOfPages();
+                    for (let i = 1; i <= totalPages; i++) {
+                        doc.setPage(i);
+                        doc.setFontSize(9);
+                        doc.text('Free excerpt from "Doraleous and Associates: A Tale of Glory" - brianmshoemaker.com', 
+                               20, 290);
+                        doc.text(`Page ${i} of ${totalPages}`, 170, 290);
+                    }
+                    
+                    // Save the PDF
+                    doc.save('Doraleous-and-Associates-Chapter-1.pdf');
+                    
+                } catch (error) {
+                    console.error('Error generating PDF:', error);
+                    alert('Sorry, there was an error generating the PDF. Please try again.');
+                } finally {
+                    // Remove loading state
+                    document.body.classList.remove('pdf-generating');
                 }
             });
             
@@ -509,6 +651,8 @@
                     excerptText.requestFullscreen().then(() => {
                         excerptText.classList.add('fullscreen-reading');
                         this.querySelector('.btn-text').textContent = 'Exit Full Screen';
+                    }).catch(err => {
+                        console.log('Fullscreen error:', err);
                     });
                 } else {
                     document.exitFullscreen().then(() => {
@@ -516,6 +660,54 @@
                         this.querySelector('.btn-text').textContent = 'Full Screen';
                     });
                 }
+            });
+            
+            // Handle fullscreen change events
+            document.addEventListener('fullscreenchange', function() {
+                if (!document.fullscreenElement) {
+                    excerptText.classList.remove('fullscreen-reading');
+                    fullScreenBtn.querySelector('.btn-text').textContent = 'Full Screen';
+                }
+            });
+            
+            // Newsletter form submission
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const email = formData.get('email');
+                
+                // Hide previous messages
+                newsletterSuccess.style.display = 'none';
+                newsletterError.style.display = 'none';
+                
+                // Submit to Formspree
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        newsletterSuccess.style.display = 'block';
+                        this.reset();
+                        // Track successful signup
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'newsletter_signup', {
+                                'event_category': 'engagement',
+                                'event_label': 'excerpt_page'
+                            });
+                        }
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    newsletterError.style.display = 'block';
+                });
             });
             
             // Track reading progress
@@ -528,10 +720,12 @@
                         hasReadToEnd = true;
                         const readingTime = Math.round((Date.now() - readingStartTime) / 1000);
                         
-                        if (typeof AuthorWebsite !== 'undefined') {
-                            AuthorWebsite.trackEvent('excerpt_read_complete', {
-                                chapter: 'chapter-1',
-                                reading_time_seconds: readingTime
+                        // Track completion
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'excerpt_complete', {
+                                'event_category': 'engagement',
+                                'event_label': 'chapter_1',
+                                'value': readingTime
                             });
                         }
                     }
@@ -544,50 +738,6 @@
             if (finalParagraph) {
                 observer.observe(finalParagraph);
             }
-            
-            // Track how far users scroll through the excerpt
-            window.addEventListener('scroll', function() {
-                const excerptSection = document.querySelector('.excerpt-content-section');
-                const sectionTop = excerptSection.offsetTop;
-                const sectionHeight = excerptSection.offsetHeight;
-                const scrollPosition = window.scrollY;
-                const windowHeight = window.innerHeight;
-                
-                const scrollProgress = Math.min(100, Math.max(0, 
-                    ((scrollPosition + windowHeight - sectionTop) / sectionHeight) * 100
-                ));
-                
-                // Track milestone reading progress
-                if (scrollProgress >= 25 && !this.milestone25) {
-                    this.milestone25 = true;
-                    if (typeof AuthorWebsite !== 'undefined') {
-                        AuthorWebsite.trackEvent('excerpt_reading_progress', {
-                            progress: 25,
-                            chapter: 'chapter-1'
-                        });
-                    }
-                }
-                
-                if (scrollProgress >= 50 && !this.milestone50) {
-                    this.milestone50 = true;
-                    if (typeof AuthorWebsite !== 'undefined') {
-                        AuthorWebsite.trackEvent('excerpt_reading_progress', {
-                            progress: 50,
-                            chapter: 'chapter-1'
-                        });
-                    }
-                }
-                
-                if (scrollProgress >= 75 && !this.milestone75) {
-                    this.milestone75 = true;
-                    if (typeof AuthorWebsite !== 'undefined') {
-                        AuthorWebsite.trackEvent('excerpt_reading_progress', {
-                            progress: 75,
-                            chapter: 'chapter-1'
-                        });
-                    }
-                }
-            });
         });
     </script>
     
