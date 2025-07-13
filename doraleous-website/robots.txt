@@ -1,74 +1,13 @@
 # ===================================
-# ROBOTS.TXT
-# File: robots.txt
+# ROBOTS.TXT for Brian M. Shoemaker
+# Author Website: Doraleous and Associates
 # ===================================
 
-# Allow all web crawlers access to all content
+# Allow all legitimate web crawlers
 User-agent: *
 Allow: /
 
-# Disallow access to admin areas
-Disallow: /admin/
-Disallow: /api/
-Disallow: /assets/admin/
-
-# Disallow temporary and system files
-Disallow: /tmp/
-Disallow: /.git/
-Disallow: /.env
-Disallow: /config/
-Disallow: /vendor/
-Disallow: /node_modules/
-
-# Disallow checkout and cart pages (no SEO value)
-Disallow: /checkout.html
-Disallow: /cart.html
-Disallow: /order-success.html
-
-# Disallow search results and filtered pages
-Disallow: /search?*
-Disallow: /*?search=*
-Disallow: /*?filter=*
-Disallow: /*?page=*
-
-# Disallow user-specific pages
-Disallow: /my-account/
-Disallow: /wishlist/
-Disallow: /compare/
-
-# Allow but crawl delay for resource-heavy pages
-User-agent: *
-Crawl-delay: 1
-
-# Specific rules for major search engines
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Slurp
-Allow: /
-Crawl-delay: 2
-
-# Block bad bots and scrapers
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
-User-agent: DotBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: Exabot
-Disallow: /
-
+# Block AI training bots (protect your content)
 User-agent: CCBot
 Disallow: /
 
@@ -81,16 +20,44 @@ Disallow: /
 User-agent: Google-Extended
 Disallow: /
 
-# Allow access to specific assets
+User-agent: Claude-Web
+Disallow: /
+
+# Block aggressive SEO scrapers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Disallow development and system files
+Disallow: /.git/
+Disallow: /.env
+Disallow: /node_modules/
+Disallow: /.netlify/
+
+# Allow access to important assets
 Allow: /assets/css/
 Allow: /assets/js/
 Allow: /assets/images/
 Allow: /assets/fonts/
+Allow: /assets/downloads/
+
+# Be nice to search engines
+User-agent: Googlebot
+Crawl-delay: 1
+
+User-agent: Bingbot
+Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://authorname.com/sitemap.xml
-Sitemap: https://authorname.com/sitemap-images.xml
-Sitemap: https://authorname.com/sitemap-blog.xml
+Sitemap: https://brianmshoemaker.com/sitemap.xml
 
-# Host specification (helps with canonicalization)
-Host: https://authorname.com
+# Host specification
+Host: https://brianmshoemaker.com
